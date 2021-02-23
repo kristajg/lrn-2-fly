@@ -1,7 +1,7 @@
 {
-  "name": "phaser3-project-template",
+  "name": "Lrn2Fly",
   "version": "1.1.0",
-  "description": "A Phaser 3 Project Template",
+  "description": "Teach a bird to fly",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --config webpack/prod.js ",
@@ -11,13 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/photonstorm/phaser3-project-template.git"
   },
-  "author": "Taylor Nodell and Richard Davey <rdavey@gmail.com> (http://www.photonstorm.com)",
+  "author": "Krista Goralczyk, Richard Davey",
   "license": "MIT",
-  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
-  "bugs": {
-    "url": "https://github.com/photonstorm/phaser3-project-template/issues"
-  },
-  "homepage": "https://github.com/photonstorm/phaser3-project-template#readme",
+  "homepage": "",
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
@@ -35,9 +31,9 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "terser-webpack-plugin": "^4.2.2",
-    "webpack": "^5.11.1",
-    "webpack-cli": "^4.3.1",
-    "webpack-dev-server": "^3.1.14",
+    "webpack": "^5.21.1",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.1.4"
   },
   "dependencies": {

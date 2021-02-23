@@ -1,10 +1,11 @@
-import React from "react";
+import React from 'react';
+import '../styles/base.css';
 
 export default class App extends React.Component {
 	render() {
 		return (
 			<div style={{ textAlign: "center" }}>
-				<h1>Hello World</h1>
+				<h3>Learn 2 Fly</h3>
 			</div>
 		);
 	}
