@@ -30,8 +30,14 @@ class playGame extends Phaser.Scene {
     skyTile.fixedToCamera = true;
 
     // Setup platforms - static group of physics objects
-    // TODO: add more platforms for action time
     platforms = this.physics.add.staticGroup();
+
+    // Create the platforms
+    // TODO: why does setScale() on a platform not update the collision box?
+    platforms.create(550, 450, 'platform');
+    platforms.create(850, 350, 'platform');
+    platforms.create(1450, 550, 'platform');
+    platforms.create(2000, 450, 'platform');
 
     // Set up the ground floor
     mainGround = this.add.tileSprite(0, 600, 5000, 100, "groundTile");
@@ -58,11 +64,12 @@ class playGame extends Phaser.Scene {
     // this.physics.resume();
     // scene.physics.world.on('resume', function() { /* ... */ });
 
-    player.setScale(1.2);
+    // player.setScale(1.2);
     // mainGround.setScale(1.2);
 
     // Set the bounds of the camera to the size of the background
     this.cameras.main.setBounds(0, 0, skyTile.displayWidth, skyTile.displayHeight);
+
     // Tell the camera to follow the player
     this.cameras.main.startFollow(player);
 
@@ -92,7 +99,7 @@ class playGame extends Phaser.Scene {
     cursors = this.input.keyboard.createCursorKeys();
 
     // Setup collision
-    // this.physics.add.collider(player, platforms);
+    this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, mainGround);
 
     // See if 2 objects are overlapping collision
@@ -117,6 +124,7 @@ class playGame extends Phaser.Scene {
     }
 
     // Player jump
+    // TODO: add jump art / animation
     if (cursors.up.isDown && player.body.touching.down) {
         player.setVelocityY(-330);
     }
