@@ -1,17 +1,14 @@
 import Phaser from "phaser";
-import skyImg from "../assets/sky3.png";
+import smallSky from "../assets/smallSky.png";
 import bird from "../assets/bird.png";
-import groundTileSmall from "../assets/groundTile16.png";
-import groundTileBig from "../assets/groundTile32.png";
+import groundTile from "../assets/groundTile.png";
 import platform from "../assets/platform.png";
 
 // Declare game variables
 let player;
-let ground;
 let platforms;
 let cursors;
 let gameOver = false;
-let tilesprite;
 let mainGround;
 
 class playGame extends Phaser.Scene {
@@ -20,35 +17,29 @@ class playGame extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('skyImg', skyImg);
-    this.load.image('groundTileSmall', groundTileSmall);
-    this.load.image('groundTileBig', groundTileBig);
+    this.load.image('smallSky', smallSky);
+    this.load.image('groundTile', groundTile);
     this.load.image('platform', platform);
     this.load.spritesheet('bird', bird, { frameWidth: 79.5, frameHeight: 90 });
   }
 
   create() {
-    // Add background
-    // TODO: repeat background image
-    let bg = this.add.image(0, 0, 'skyImg').setOrigin(0, 0);
-
-
-    // Create a tilesprite (x, y, width, height, key)
-    mainGround = this.add.tileSprite(0, 0, 16, 16, 'groundTileSmall');
-    this.physics.add.existing(mainGround, true);
+    // Add background, set up to repeat horizontally with scrolling
+    // Note: Changing the scroll factor to higher amt increase the speed of scroll
+    let skyTile = this.add.tileSprite(0, 0, 5000, 600, 'smallSky').setOrigin(0, 0).setScrollFactor(2);
+    skyTile.fixedToCamera = true;
 
     // Setup platforms - static group of physics objects
+    // TODO: add more platforms for action time
     platforms = this.physics.add.staticGroup();
 
-    // This is the floor, basically
-    // platforms.create(400, 568, 'platform').setScale(2.5).refreshBody();
-    // platforms.create(32, 568, 'groundTileBig').setScale(1).refreshBody();
+    // Set up the ground floor
+    mainGround = this.add.tileSprite(0, 600, 5000, 100, "groundTile");
+    this.physics.add.existing(mainGround, true);
 
     // Setup player - dynamic physics object
     player = this.physics.add.sprite(100, 450, 'bird');
     player.setBounce(0.2);
-
-    // Ok so Im working with this now to enable side scrollin
     player.setCollideWorldBounds(true);
 
     // Game object positioning
@@ -56,15 +47,10 @@ class playGame extends Phaser.Scene {
     // player.setRandomPosition(0, 0, 800, 600);
     // Set player initial position
     player.x = 0;
-    player.y = 500;
+    player.y = 700;
 
-    // experiment time
-    // FUCKING YES
     // This sets the world to wider than the scene's current view AKA now we have a side scroller
     this.physics.world.setBounds(0, 0, 5000, 600);
-    // this.scene.setBounds(0, 0, 5000, 600);
-
-    // Next up, lets test collision with stuff!!!
 
     // This pauses/resumes the scene
     // this.physics.pause();
@@ -73,13 +59,10 @@ class playGame extends Phaser.Scene {
     // scene.physics.world.on('resume', function() { /* ... */ });
 
     player.setScale(.8);
-
-    // // Resize the game world for side scrolling goodness
-    // this.game.world.setBounds(0, 0, 5000, 600);
-    // this.physics.world.setBounds(x, y, 5000, 600);
+    // mainGround.setScale(1.2);
 
     // Set the bounds of the camera to the size of the background
-    this.cameras.main.setBounds(0, 0, bg.displayWidth, bg.displayHeight);
+    this.cameras.main.setBounds(0, 0, skyTile.displayWidth, skyTile.displayHeight);
     // Tell the camera to follow the player
     this.cameras.main.startFollow(player);
 
@@ -109,29 +92,19 @@ class playGame extends Phaser.Scene {
     cursors = this.input.keyboard.createCursorKeys();
 
     // Setup collision
-    this.physics.add.collider(player, platforms);
+    // this.physics.add.collider(player, platforms);
+    this.physics.add.collider(player, mainGround);
 
     // See if 2 objects are overlapping collision
     // var isOverlapping = scene.physics.world.overlap(object1, object2);
-
-    // Setup camera
-    // this.camera.follow(player);
-
-    // this.tweens.add({
-    //   targets: logo,
-    //   y: 450,
-    //   duration: 2000,
-    //   ease: "Power2",
-    //   yoyo: true,
-    //   loop: -1
-    // });
   }
 
   update() {
     if (gameOver) {
       return;
     }
-    // yall its walking time
+  
+    // Player walk
     if (cursors.left.isDown) {
         player.setVelocityX(-160);
         player.anims.play('left', true);
