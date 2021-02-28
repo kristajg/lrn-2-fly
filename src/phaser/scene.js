@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import smallSky from "../assets/smallSky.png";
+import smallSky from "../assets/sky2.png";
 import bird from "../assets/bird.png";
 import groundTile from "../assets/groundTile.png";
 import platform from "../assets/platform.png";
@@ -20,7 +20,7 @@ class playGame extends Phaser.Scene {
     this.load.image('smallSky', smallSky);
     this.load.image('groundTile', groundTile);
     this.load.image('platform', platform);
-    this.load.spritesheet('bird', bird, { frameWidth: 79.5, frameHeight: 90 });
+    this.load.spritesheet('bird', bird, { frameWidth: 64, frameHeight: 64 });
   }
 
   create() {
@@ -58,7 +58,7 @@ class playGame extends Phaser.Scene {
     // this.physics.resume();
     // scene.physics.world.on('resume', function() { /* ... */ });
 
-    player.setScale(.8);
+    player.setScale(1.2);
     // mainGround.setScale(1.2);
 
     // Set the bounds of the camera to the size of the background
