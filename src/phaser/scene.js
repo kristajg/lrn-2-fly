@@ -77,6 +77,8 @@ class playGame extends Phaser.Scene {
 
     // Place the enemies
     snakes.create(150, 500, 'snake', 3);
+    snakes.create(250, 500, 'snake', 3);
+    snakes.create(350, 500, 'snake', 3);
 
     // Create the ground floor
     mainGround = this.add.tileSprite(0, 600, 5000, 100, 'groundTile');
@@ -148,8 +150,8 @@ class playGame extends Phaser.Scene {
     // Setup text
     scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '26px', fill: '#000' });
     hitPointText = this.add.text(16, 38, 'HP: 3', { fontSize: '26px', fill: '#000' });
-    scoreText.fixedToCamera = true;
-    hitPointText.fixedToCamera = true;
+    // scoreText.fixedToCamera = true;
+    // hitPointText.fixedToCamera = true;
 
     // Setup overlap events
     this.physics.add.overlap(player, toasts, this.collectItem, null, this);
@@ -193,6 +195,15 @@ class playGame extends Phaser.Scene {
     enemy.disableBody(true, true);
     hitPoints--;
     hitPointText.setText(`HP: ${hitPoints}`);
+
+    // If hitPoints run out, the game is over
+    if (hitPoints === 0) {
+      this.physics.pause();
+      player.setTint(0xff0000);
+      player.anims.play('turn');
+      gameOver = true;
+      this.add.text(200, 400, 'Game Over', { fontSize: '34px', fill: '#9d303b' });
+    }
   }
 }
 
