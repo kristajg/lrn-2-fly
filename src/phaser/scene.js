@@ -114,42 +114,24 @@ class playGame extends Phaser.Scene {
     // Play toast animation by default
     toasts.playAnimation({ key: 'toastSpin' });
 
-    // Create snake group (enemy)
-    // TODO: make enemy move logic / separate out into own function
-    // snakes.setVelocityX(380);
-    // snakes.playAnimation('snakeMoveRight', true);
-    // I think I might need to do a tween? for the sneks
+    // Initialize snake enemy movement
     snakes.playAnimation({ key: 'snakeMoveRight' });
-
-    // this.tweens.add({
-    //   targets: snakes,
-    //   x: 750,
-    //   duration: 2000,
-    //   ease: 'Linear',
-    // });
-
-    // snakes.on(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim, frame, gameObj) => {
-    //   console.log('hello! ', frame);
-    // });
-
-    // let snakeTween = this.tweens.add({
-    //   targets: snakes,
-    //   alpha: 1,
-    //   // alpha: '+=1',
-    //   // alpha: { from: 0, to: 1 },
-    //   // alpha: { start: 0, to: 1 },  
-    //   // alpha: { start: value0, from: value1, to: value2 },  
-    //   // alpha: function(target, key, value, targetIndex, totalTargets, tween)  { return newValue; },
-    //   // alpha: {
-    //   //      getActive: function (target, key, value, targetIndex, totalTargets, tween) { return newValue; },
-    //   //      getStart: function (target, key, value, targetIndex, totalTargets, tween) { return newValue; },
-    //   //      getEnd: function (target, key, value, targetIndex, totalTargets, tween) { return newValue; }
-    //   // },
-    //   ease: 'Linear',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-    //   duration: 1000,
-    //   repeat: -1,            // -1: infinity
-    //   yoyo: false
-    // });
+    snakes.setVelocityX(160);
+    // TODO: can't just listen on one group child to figure out this logic. needs a func to handle it
+    snakes.children.entries[0].on('animationcomplete', (anim, frame, gameObj) => {
+      switch(anim.key) {
+        case 'snakeMoveRight':
+          snakes.playAnimation({ key: 'snakeMoveLeft' });
+          snakes.setVelocityX(-160);
+          break;
+        case 'snakeMoveLeft':
+          snakes.playAnimation({ key: 'snakeMoveRight' });
+          snakes.setVelocityX(160);
+          break;
+        default:
+          break;
+      }
+    });
 
     cursors = this.input.keyboard.createCursorKeys();
 
