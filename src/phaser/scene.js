@@ -21,8 +21,10 @@ let platforms;
 let toasts;
 let snakes;
 let cursors;
+let hitPoints = 3;
 let score = 0;
 let scoreText = '';
+let hitPointText = '';
 let gameOver = false;
 
 class playGame extends Phaser.Scene {
@@ -144,13 +146,14 @@ class playGame extends Phaser.Scene {
     this.physics.add.collider(snakes, platform);
 
     // Setup text
-    scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '26px', fill: '#000' });
+    hitPointText = this.add.text(16, 38, 'HP: 3', { fontSize: '26px', fill: '#000' });
+    scoreText.fixedToCamera = true;
+    hitPointText.fixedToCamera = true;
 
     // Setup overlap events
     this.physics.add.overlap(player, toasts, this.collectItem, null, this);
     this.physics.add.overlap(player, snakes, this.damagePlayer, null, this);
-    // See if 2 objects are overlapping collision
-    // var isOverlapping = scene.physics.world.overlap(object1, object2);
   }
 
   update() {
@@ -187,6 +190,9 @@ class playGame extends Phaser.Scene {
 
   damagePlayer (player, enemy) {
     console.log('damage player triggered ', enemy);
+    enemy.disableBody(true, true);
+    hitPoints--;
+    hitPointText.setText(`HP: ${hitPoints}`);
   }
 }
 
