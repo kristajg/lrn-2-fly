@@ -5,6 +5,7 @@ import Phaser, { Animations } from 'phaser';
 import skyBackground from '../assets/sky2.png';
 import bird from '../assets/birdSpriteSheet.png';
 import toast from '../assets/toastSpriteSheet.png';
+import cake from '../assets/cakeSpriteSheet.png';
 import snake from '../assets/snakeSpriteSheet.png';
 import groundTile from '../assets/groundTile.png';
 import platform from '../assets/platform.png';
@@ -12,13 +13,14 @@ import platform from '../assets/platform.png';
 // Animations
 import { createSnakeAnims } from '../anims/enemyAnims';
 import { createPlayerAnims } from '../anims/playerAnims';
-import { createToastAnims } from '../anims/itemAnims';
+import { createToastAnims, createCakeAnims } from '../anims/itemAnims';
 
 // Declare game variables
 let player;
 let mainGround;
 let platforms;
 let toasts;
+let cakes;
 let snakes;
 let cursors;
 let hitPoints = 3;
@@ -37,6 +39,7 @@ class playGame extends Phaser.Scene {
     this.load.image('groundTile', groundTile);
     this.load.image('platform', platform);
     this.load.spritesheet('toast', toast, { frameWidth: 32, frameHeight: 32 });
+    this.load.spritesheet('cake', cake, { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('snake', snake, { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('bird', bird, { frameWidth: 64, frameHeight: 64 });
   }
@@ -46,6 +49,7 @@ class playGame extends Phaser.Scene {
     createPlayerAnims(this.anims);
     createToastAnims(this.anims);
     createSnakeAnims(this.anims);
+    createCakeAnims(this.anims);
 
     // Add background, set up to repeat horizontally with scrolling
     // Note: Changing the scroll factor to higher amt increase the speed of scroll
@@ -64,7 +68,6 @@ class playGame extends Phaser.Scene {
     platforms.create(2000, 450, 'platform');
 
     // Create bonus items: group of static objects
-    // TODO: add second type of 'good' item: cakes
     toasts = this.physics.add.staticGroup();
 
     // Place the bonus items
@@ -72,13 +75,17 @@ class playGame extends Phaser.Scene {
     toasts.create(550, 390, 'toast');
     toasts.create(600, 390, 'toast');
 
+    cakes = this.physics.add.staticGroup();
+    cakes.create(200, 300, 'cake');
+
+
     // Create groups of enemies
     snakes = this.physics.add.group();
 
     // Place the enemies
-    snakes.create(150, 500, 'snake', 3);
-    snakes.create(250, 500, 'snake', 3);
     snakes.create(350, 500, 'snake', 3);
+    snakes.create(450, 500, 'snake', 3);
+    snakes.create(950, 500, 'snake', 3);
 
     // Create the ground floor
     mainGround = this.add.tileSprite(0, 600, 5000, 100, 'groundTile');
@@ -117,6 +124,8 @@ class playGame extends Phaser.Scene {
 
     // Play toast animation by default
     toasts.playAnimation({ key: 'toastSpin' });
+
+    cakes.playAnimation({ key: 'cakeSpin' });
 
     // Initialize snake enemy movement
     snakes.playAnimation({ key: 'snakeMoveRight' });

@@ -7,6 +7,9 @@ module.exports = {
 	mode: "development",
 	devtool: "eval-source-map",
 	entry: "./src/index.js", //do we need this?
+	devServer: {
+		port: 9007,
+	},
 	output: {
 		path: path.resolve("dist"),
 		filename: "index_bundle.js",
